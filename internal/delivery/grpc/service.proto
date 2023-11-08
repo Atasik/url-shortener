@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "./;grpc";
+
+package grpc;
+
+
+message OriginalURL {
+    string url = 1;
+}
+
+message Token {
+    string token = 1;
+}
+
+service Link {
+    rpc CreateToken(OriginalURL) returns(Token) {}
+    rpc GetOriginalURL(Token) returns(OriginalURL) {}
+}

@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  link-shortener:
+    container_name: link-shortener
+    build: .
+    command: ./link-shortener
+    volumes:
+      - ./.bin/:/root/
+      - ./configs/:/root/configs/
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+      - 4545:4545
+
+  link-shortener-db:
+    container_name: link-shortener-db
+    build: .
+    command: ./link-shortener -db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./.bin/:/root/
+      - ./configs/:/root/configs/
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+      - 4545:4545
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "qwerty"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "urls"
+    ports:
+      - 5436:5432
+  
+

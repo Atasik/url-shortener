@@ -1,0 +1,12 @@
+postgres:
+  dbname: "urls"
+  sslmode: "disable"
+
+http:
+  port: "8080"
+  readTimeout: 10s
+  writeTimeout: 10s
+  maxHeaderMegaBytes: 1
+
+grpc:
+  port: "4545"

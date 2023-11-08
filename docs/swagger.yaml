@@ -1,0 +1,99 @@
+basePath: /
+definitions:
+  domain.CreateTokenRequest:
+    properties:
+      original_url:
+        type: string
+    type: object
+  v1.errResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  v1.linkResponse:
+    properties:
+      link:
+        type: string
+    type: object
+  v1.tokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Тех. Задание Ozon
+  title: Ozon Backend Test
+  version: "2.0"
+paths:
+  /api/v1/link:
+    post:
+      consumes:
+      - application/json
+      operationId: create-token
+      parameters:
+      - description: link
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateTokenRequest'
+      responses:
+        "201":
+          description: token
+          schema:
+            $ref: '#/definitions/v1.tokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: Create Token
+      tags:
+      - link
+  /api/v1/link/{token}:
+    get:
+      operationId: get-long-url
+      parameters:
+      - description: link
+        in: path
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: link
+          schema:
+            $ref: '#/definitions/v1.linkResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: Get long URL
+      tags:
+      - link
+swagger: "2.0"
